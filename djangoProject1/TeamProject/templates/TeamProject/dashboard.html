@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <style>
+        .chart-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        canvas {
+            width:600px;
+            max-width: 800px;
+            height: 400px;
+            margin-top: 100px;
+            max-height:600px;
+        }
+    </style>
+</head>
+<body>
+    <h1>SPARQL Query Results</h1>
+    <ul>
+        {% for city_population in city_population_list %}
+            <li>City: {{ city_population.city }} - Population: {{ city_population.population }}</li>
+        {% endfor %}
+    </ul>
+
+    <div class="chart-container">
+        <canvas id="populationChart" width="350" height="250"></canvas>
+        <canvas id="pieChart" width="350" height="250"></canvas>
+    </div>
+<div>
+
+</div>
+
+    <script>
+        var cityPopulationList = {{ city_population_list|safe }};
+
+        var cityNames = cityPopulationList.map(function(item) {
+            return item.city;
+        });
+
+        var populations = cityPopulationList.map(function(item) {
+            return parseFloat(item.population);
+        });
+
+        var ctx = document.getElementById('populationChart').getContext('2d');
+
+        var chart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: cityNames,
+                datasets: [{
+                    label: 'Population',
+                    data: populations,
+                    backgroundColor: 'rgba(500, 150, 190, 0.2)',
+                    borderColor: 'rgba(500, 100, 100, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    </script>
+
+    <script>
+        var ctxPie = document.getElementById('pieChart').getContext('2d');
+        var pieChart = new Chart(ctxPie, {
+            type: 'pie', // Pie chart type
+            data: {
+                labels: cityNames,
+                datasets: [{
+                    label: 'Population',
+                    data: populations,
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.7)',
+                        'rgba(54, 162, 235, 0.7)',
+                        'rgba(255, 206, 86, 0.7)',
+                        'rgba(75, 192, 192, 0.7)',
+                        'rgba(153, 102, 255, 0.7)',
+                    ],
+                }],
+            },
+            options: {
+            },
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SPARQL Query Form</title>
+</head>
+<body>
+    <div style="text-align: center;">
+        <h1>SPARQL Query Form</h1>
+        <form method="post" action="">
+            {% csrf_token %}
+            <label for="sparqlQuery">SPARQL Query:</label>
+            <textarea id="sparqlQuery" name="sparqlQuery" rows="4" cols="50"></textarea>
+            <br><br>
+            <label for="endpoint">SPARQL Endpoint:</label>
+            <input type="text" id="endpoint" name="endpoint">
+            <br><br>
+            <input type="submit" value="Submit">
+        </form>
+    </div>
+</body>
+</html>
